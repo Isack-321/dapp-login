@@ -4,14 +4,22 @@ import { useEthers,useEtherBalance } from "@usedapp/core";
 import {formatEther} from "@ethersproject/units"
 import Identicon from "./Identicon";
 
-export default function ConnectButton(){
 
-    function handleConnectButton (){
+type props={
+    handleOpenModal:any;
+};
+
+export default function ConnectButton({handleOpenModal }: props){
+
+    const {activateBrowserWallet, account}= useEthers();
+    const etherBalance= useEtherBalance(account);
+    
+
+    function handleConnectWallet (){
         activateBrowserWallet();
     }
 
-    const {activateBrowserWallet,account}= useEthers();
-    const etherBalance= useEtherBalance(account);
+   
 
     return account ? (
 
@@ -32,7 +40,7 @@ export default function ConnectButton(){
             </Box>
 
             <Button
-            
+            onClick={handleOpenModal}
             bg="gray.800"
             border=" 1px solid transparent"
             _hover={{
@@ -58,7 +66,25 @@ export default function ConnectButton(){
         </Box>
 
     ) : (
-        <Button onClick={handleConnectButton}>Connect to a wallet</Button>
+       
+
+        
+        <Button onClick={handleConnectWallet}
+            bg="blue.800"
+            color="blue.300"
+            fontSize="lg"
+            fontWeight="medium"
+            borderRadius="xl"
+            border="1px solid transparent"
+            _hover={{
+            borderColor: "blue.700",
+            color: "blue.400",
+            }}
+            _active={{
+            backgroundColor: "blue.800",
+            borderColor: "blue.700",
+            }}
+            >Connect to a wallet</Button>
     );
 
 
